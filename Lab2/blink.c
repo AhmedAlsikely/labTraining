@@ -24,6 +24,13 @@ pin_t red_led ={
                 .current = CURRENT_2MA,
                 .pinType = PIN_STD,
 };
+pin_t blue_led ={
+                .port=PORT_F,
+                .pinNumber = PIN_2,
+                .direction = PIN_OUT,
+                .current = CURRENT_2MA,
+                .pinType = PIN_STD,
+};
 
 //-------------------------------------- Function Decelerations ------------------------------------
 void DelayMS(uint32_t delayValueMs);
@@ -32,11 +39,14 @@ void DelayMS(uint32_t delayValueMs);
 void main(void){
     SysCtlClockSet(SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ | SYSCTL_USE_PLL | SYSCTL_SYSDIV_2_5 );
     Pin_Init(&red_led);
+    Pin_Init(&blue_led);
     Std_Return retVal = R_NOK;
     while(1){
      Pin_Write(&red_led, HIGH, &retVal);
+     Pin_Toggle(&blue_led);
      DelayMS(500);
      Pin_Write(&red_led, LOW, &retVal);
+     Pin_Toggle(&blue_led);
      DelayMS(500);
     }
 
