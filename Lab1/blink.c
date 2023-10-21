@@ -14,7 +14,6 @@
 #include <Pin.h>
 
 //---------------------------------------------- Macros --------------------------------------------
-#define DELAY_TIME 500
 
 //---------------------------------------------- Variables -----------------------------------------
 
@@ -32,14 +31,10 @@ void main(void){
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0);
     while(1){
         GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0b1000);
-        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0);
-        DelayMS(DELAY_TIME);
+        DelayMS(500);
         GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0);
-        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0b100);
-        DelayMS(DELAY_TIME);
+        DelayMS(500);
     }
-
-
 }
 
 
