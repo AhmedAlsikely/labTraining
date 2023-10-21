@@ -16,15 +16,8 @@
 #include "driverlib/gpio.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <gpio_interrupt_cfg.h>
 //---------------------------------------------- Macros --------------------------------------------
-
-#define BIT_MASK (uint8_t)1
-
-#define SET_BIT(REG,BIT_POSN)      (REG |= (BIT_MASK << BIT_POSN))
-#define CLEAR_BIT(REG,BIT_POSN)    (REG &= ~(BIT_MASK << BIT_POSN))
-#define TOGGLE_BIT(REG,BIT_POSN)   (REG ^= (BIT_MASK << BIT_POSN))
-#define READ_BIT(REG,BIT_POSN)     ((REG >> BIT_POSN) & BIT_MASK)
 
 
 #define PORT_A GPIO_PORTA_AHB_BASE
@@ -47,13 +40,13 @@
 
 // pad type
 #define PIN_STD GPIO_PIN_TYPE_STD
-#define PIN_PU GPIO_PIN_TYPE_STD_WPU
-#define PIN_PD GPIO_PIN_TYPE_STD_WPD
+#define PIN_PU  GPIO_PIN_TYPE_STD_WPU
+#define PIN_PD  GPIO_PIN_TYPE_STD_WPD
 
 // Direction
 
 #define PIN_OUT GPIO_DIR_MODE_OUT
-#define PIN_IN GPIO_DIR_MODE_IN
+#define PIN_IN  GPIO_DIR_MODE_IN
 
 // Current
 
@@ -63,7 +56,7 @@
 
 // pin status
 
-#define LOW 0
+#define LOW  0
 #define HIGH 1
 
 //------------------------------- User define datatypes ------------------------
@@ -74,6 +67,11 @@ typedef struct{
     uint32_t direction;
     uint32_t current;
     uint32_t pinType;
+#if INTERRUPT_FEATURE_ENABLE == INTERRUPT_EXTERNAL_INTx_FEATURE_ENABLE
+    void(* PORT_InterruptHandler)(void);
+    uint32_t INT_Type;
+    uint8_t INT_priority;
+#endif
 }pin_t;
 
 typedef enum{
@@ -85,8 +83,8 @@ typedef enum{
 
 extern Std_Return Pin_Init(pin_t *pin);
 
-extern Std_Return Pin_Write(pin_t *pin, uint8_t state,uint8_t *returnType);
-extern int8_t Pin_read_value(pin_t *pin);
+extern Std_Return Pin_Write(pin_t *pin, uint8_t state);
+extern int8_t Pin_read_value(pin_t *pin,uint8_t *returnType);
 extern Std_Return Pin_Toggle(pin_t *pin);
 
 

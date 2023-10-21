@@ -50,9 +50,9 @@ Std_Return Pin_Init(pin_t *pin){
     return ret_status;
 }
 
-Std_Return Pin_Write(pin_t *pin, uint8_t state,uint8_t *returnType){
+Std_Return Pin_Write(pin_t *pin, uint8_t state){
     Std_Return ret_status = R_NOK;
-    if(NULL == pin || NULL == returnType){
+    if(NULL == pin ){
         ret_status = R_NOK;
     }
     else
@@ -75,19 +75,20 @@ Std_Return Pin_Write(pin_t *pin, uint8_t state,uint8_t *returnType){
 }
 
 
-int8_t Pin_read_value(pin_t *pin){
+int8_t Pin_read_value(pin_t *pin,uint8_t *returnType){
     Std_Return ret_status = R_NOK;
-        uint32_t pin_value =0;
-        if(NULL == pin){
+    uint32_t pin_value = 0;
+    if(NULL == pin || NULL == returnType){
             ret_status = R_NOK;
-        }
-        else
-        {
-            pin_value = GPIOPinRead(pin->port, pin->pinNumber);
+    }
+    else
+    {
+         pin_value = GPIOPinRead(pin->port, pin->pinNumber);
 
-            ret_status = R_OK;
-        }
-        return ret_status;
+         ret_status = R_OK;
+    }
+    *returnType = ret_status;
+    return pin_value;
 }
 
 
@@ -99,7 +100,7 @@ Std_Return Pin_Toggle(pin_t *pin){
         }
         else
         {
-            pin_value = Pin_read_value(pin);
+            pin_value = GPIOPinRead(pin->port, pin->pinNumber);
             if(pin_value == pin->pinNumber)
             {
                 GPIOPinWrite(pin->port, pin->pinNumber, 0x00);

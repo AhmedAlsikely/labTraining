@@ -23,12 +23,11 @@ void DelayMS(uint32_t delayValueMs);
 
 void main(void){
     SysCtlClockSet(SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ | SYSCTL_USE_PLL | SYSCTL_SYSDIV_2_5 );
+
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF));
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
-    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_2);
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0);
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0);
     while(1){
         GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0b1000);
         DelayMS(500);
